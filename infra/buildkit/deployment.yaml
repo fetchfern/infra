@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: buildkit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: buildkit
+  template:
+    metadata:
+      labels:
+        app: buildkit
+    spec:
+      nodeSelector:
+        ferrous.ch/builder: "true"
+      volumes:
+        - name: config
+          configMap:
+            name: buildkitd-config
+        - name: registry-ca
+          secret:
+            secretName: modrinth-infra-ca
+            items:
+              - key: ca.crt
+                path: ca.crt
+      containers:
+        - name: buildkit
+          image: moby/buildkit:v0.27.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          command: ["buildkitd"]
+          args:
+            - --addr=tcp://0.0.0.0:1234
+            - --config=/etc/buildkit/buildkitd.toml
+          ports:
+            - name: tcp
+              containerPort: 1234
+          volumeMounts:
+            - name: config
+              mountPath: /etc/buildkit
+            - name: registry-ca
+              mountPath: /etc/buildkit/ca
+              readOnly: true

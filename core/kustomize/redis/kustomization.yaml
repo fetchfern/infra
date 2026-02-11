@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: redis-operator
+labels:
+  - includeSelectors: false
+    pairs:
+      com.modrinth.svc/component: redis
+resources:
+  - github.com/spotahome/redis-operator/manifests/kustomize/overlays/default
+images:
+  - name: quay.io/spotahome/redis-operator
+    newTag: v1.2.4

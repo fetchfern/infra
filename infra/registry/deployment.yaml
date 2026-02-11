@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry
+spec:
+  selector:
+    matchLabels:
+      app: registry-v2
+  template:
+    metadata:
+      labels:
+        app: registry-v2
+    spec:
+      nodeSelector:
+        ferrous.ch/builder: "true"
+      volumes:
+        - name: tls
+          secret:
+            secretName: registry-tls
+      containers:
+        - name: registry
+          image: registry:2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: tcp
+              containerPort: 5000
+          env:
+            - name: REGISTRY_HTTP_TLS_CERTIFICATE
+              value: /certs/tls.crt
+            - name: REGISTRY_HTTP_TLS_KEY
+              value: /certs/tls.key
+          volumeMounts:
+            - name: tls
+              mountPath: /certs
+              readOnly: true

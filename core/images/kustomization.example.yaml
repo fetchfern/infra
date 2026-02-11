@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+images:
+  - name: labrinth
+    newName: ghcr.io/modrinth/labrinth # Change with your local build of labrinth or a remote image build (like ghcr.io/modrinth/labrinth:main)
+    newTag: main
+  - name: archon
+    newName: modrinth.local/archon
+    newTag: latest
+  - name: hermes
+    newName: ghcr.io/modrinth/hermes
+    newTag: main

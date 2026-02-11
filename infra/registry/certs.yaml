@@ -1,0 +1,43 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: modrinth-infra-ca
+spec:
+  isCA: true
+  commonName: modrinth-infra-ca
+  secretName: modrinth-infra-ca
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: modrinth-infra-ca-issuer
+spec:
+  ca:
+    secretName: modrinth-infra-ca
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: registry-tls
+spec:
+  secretName: registry-tls
+  dnsNames:
+    - registry.modrinth-infra.svc.cluster.local
+  issuerRef:
+    name: modrinth-infra-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
