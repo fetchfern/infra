@@ -2,13 +2,16 @@
 
 set -euo pipefail
 
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 <user@host>"
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <user@host> <registry-alt>"
+  echo "  <user@host>: Node host with a user with sudo privileges"
+  echo "  <registry-alt>: Alternative registry DNS name to setup trust for (tailnet domain) (! INCLUDE PORT)"
   exit 1
 fi
 
 HOST="$1"
 REGISTRY="registry.modrinth-infra.svc.cluster.local:5000"
+REGISTRY_ALT="$2"
 REMOTE_CA_PATH="/etc/rancher/k3s/registry-ca.crt"
 REMOTE_REGISTRIES="/etc/rancher/k3s/registries.yaml"
 
@@ -26,8 +29,14 @@ mirrors:
   $REGISTRY:
     endpoint:
       - "https://$REGISTRY"
+  $REGISTRY_ALT:
+    endpoint:
+      - "https://$REGISTRY_ALT"
 configs:
   "$REGISTRY":
+    tls:
+      ca_file: $REMOTE_CA_PATH
+  "$REGISTRY_ALT":
     tls:
       ca_file: $REMOTE_CA_PATH
 EOF

@@ -3,9 +3,11 @@ kind: Kustomization
 resources:
   - ./namespaces.yaml
   - ../services/archon/components/allin1
+  - ../services/loop
   - ../infra/seaweefs-s3
   - ../infra/registry
   - ../infra/buildkit
+  - ../infra/clickhouse
   - ./ingresses/archon-gateway.yaml
 components:
   - ./images

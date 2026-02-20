@@ -37,6 +37,7 @@ spec:
   secretName: registry-tls
   dnsNames:
     - registry.modrinth-infra.svc.cluster.local
+    - modrinth-registry.cymric-polaris.ts.net # TODO: Don't hardcode
   issuerRef:
     name: modrinth-infra-ca-issuer
     kind: Issuer

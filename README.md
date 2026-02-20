@@ -1,5 +1,3 @@
-# servers-infra
-
 ### Configuring SeaweedFS
 
 Setup a temporary pod to configure Seaweed:

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry-tailnet
+  annotations:
+    tailscale.com/hostname: modrinth-registry
+spec:
+  type: LoadBalancer
+  loadBalancerClass: tailscale
+  selector:
+    app: registry-v2
+  ports:
+    - name: registry
+      port: 5000
+      targetPort: 5000

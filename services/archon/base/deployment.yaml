@@ -36,6 +36,12 @@ spec:
               value: redis://rfr-archon-redis.modrinth-infra.svc.cluster.local:6379
             - name: REDIS_MAX_CONNECTIONS
               value: "128"
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "8000"
+            - name: SELF_ADDR
+              value: "http://modrinth-archon"
           ports:
             - name: http
               containerPort: 8000

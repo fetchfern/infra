@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loop
+  template:
+    metadata:
+      labels:
+        app: loop
+    spec:
+      containers:
+        - name: loop
+          image: modrinth-registry.cymric-polaris.ts.net:5000/loop:1
+          imagePullPolicy: IfNotPresent

@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: modrinth-infra
 resources:
   - service.yaml
+  - tailnet-service.yaml
   - deployment.yaml
 configMapGenerator:
   - name: buildkitd-config
