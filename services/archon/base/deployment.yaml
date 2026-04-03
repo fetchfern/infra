@@ -23,6 +23,8 @@ spec:
             - secretRef:
                 name: archon-db-app
           env:
+            - name: RUST_LOG
+              value: info,archon=debug
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -33,7 +35,7 @@ spec:
             - name: DATABASE_MAX_CONNECTIONS
               value: "16"
             - name: REDIS_URL
-              value: redis://rfr-archon-redis.modrinth-infra.svc.cluster.local:6379
+              value: redis://rfs-archon-redis.modrinth-infra.svc.cluster.local:26379
             - name: REDIS_MAX_CONNECTIONS
               value: "128"
             - name: HOST
@@ -42,6 +44,19 @@ spec:
               value: "8000"
             - name: SELF_ADDR
               value: "http://modrinth-archon"
+            - name: CLICKHOUSE_URL
+              value: http://clickhouse-cluster-clickhouse-headless.modrinth-infra.svc.cluster.local:8123
+            - name: CLICKHOUSE_USER
+              value: default
+            - name: CLICKHOUSE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: clickhouse-password-default
+                  key: password
+            - name: CLICKHOUSE_DATABASE
+              value: archon
+            - name: CLICKHOUSE_USE_VALIDATION
+              value: "1"
           ports:
             - name: http
               containerPort: 8000
@@ -52,25 +67,18 @@ spec:
             limits:
               cpu: "2"
               memory: "1Gi"
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: http
-            periodSeconds: 5
-            failureThreshold: 2
-            initialDelaySeconds: 20
           readinessProbe:
             httpGet:
               path: /healthz
               port: http
-            periodSeconds: 5
-            initialDelaySeconds: 5
+            periodSeconds: 10
+            initialDelaySeconds: 0
             timeoutSeconds: 5
             failureThreshold: 3
           startupProbe:
             httpGet:
               path: /healthz
               port: http
-            periodSeconds: 3
-            initialDelaySeconds: 3
+            periodSeconds: 1
+            initialDelaySeconds: 0
             failureThreshold: 9

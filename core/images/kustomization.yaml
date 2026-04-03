@@ -3,7 +3,7 @@ kind: Component
 images:
   - name: archon
     newName: modrinth-registry.cymric-polaris.ts.net:5000/archon
-    newTag: latest
+    newTag: latest@sha256:50c1694b42313ca732c11ba3f42bffb009eee2bde734ea2a85640dc5346ff7d2
  # - name: hermes
  #   newName: ghcr.io/modrinth/hermes
  #   newTag: main

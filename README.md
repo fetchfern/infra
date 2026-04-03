@@ -16,3 +16,11 @@ In the weed shell:
 ```
 fs.configure -locationPrefix=/buckets/ -volumeGrowthCount=1 -apply
 ```
+
+## Secrets
+
+```
+kubectl create secret generic clickhouse-password-default --from-literal=password='your-secure-password' -n modrinth-infra
+# Duplicate the secret in `modrinth` namespace, not using any external secrets manager so shrug
+kubectl create secret generic clickhouse-password-default --from-literal=password='your-secure-password' -n modrinth
+```

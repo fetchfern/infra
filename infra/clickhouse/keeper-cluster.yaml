@@ -1,7 +1,7 @@
 apiVersion: clickhouse.com/v1alpha1
 kind: KeeperCluster
 metadata:
-  name: modrinth-clickhouse-keeper
+  name: clickhouse-keeper
 spec:
   replicas: 3
   dataVolumeClaimSpec:
@@ -14,7 +14,7 @@ spec:
 apiVersion: clickhouse.com/v1alpha1
 kind: ClickHouseCluster
 metadata:
-  name: modrinth-clickhouse-cluster
+  name: clickhouse-cluster
 spec:
   replicas: 2
   dataVolumeClaimSpec:
@@ -24,4 +24,10 @@ spec:
       requests:
         storage: 10Gi
   keeperClusterRef:
-    name: modrinth-clickhouse-keeper
+    name: clickhouse-keeper
+  settings:
+    defaultUserPassword:
+      passwordType: password
+      secret:
+        name: clickhouse-password-default
+        key: password
