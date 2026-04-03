@@ -1,7 +1,7 @@
 apiVersion: databases.spotahome.com/v1
 kind: RedisFailover
 metadata:
-  name: redis
+  name: archon
 spec:
   sentinel:
     replicas: 0

@@ -5,7 +5,7 @@ set -euo pipefail
 if [ $# -ne 2 ]; then
   echo "Usage: $0 <user@host> <registry-alt>"
   echo "  <user@host>: Node host with a user with sudo privileges"
-  echo "  <registry-alt>: Alternative registry DNS name to setup trust for (tailnet domain) (! INCLUDE PORT)"
+  echo "  <registry-alt>: Alternative registry DNS name to setup trust for (example: modrinth-registry.cymric-polaris.ts.net:5000)"
   exit 1
 fi
 

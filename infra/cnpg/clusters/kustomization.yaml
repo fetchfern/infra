@@ -1,0 +1,9 @@
+kind: Kustomization
+namespace: modrinth
+namePrefix: cnpg-
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/part-of: modrinth-stack
+resources:
+  - cnpg-archon.yaml

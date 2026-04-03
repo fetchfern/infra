@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: core
+spec:
+  selector:
+    matchLabels:
+      app: archon
+      component: core
+  template:
+    metadata:
+      labels:
+        app: archon
+        component: core
+    spec:
+      containers:
+        args:
+          ["/archon/archon", "--core"]

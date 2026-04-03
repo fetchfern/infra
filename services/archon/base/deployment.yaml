@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: archon
+  name: archon-
 spec:
   replicas: 1
   selector:
@@ -16,26 +16,26 @@ spec:
         - name: archon
           image: archon
           imagePullPolicy: IfNotPresent
-          args: ["/archon/archon", "--core"]
+          args: ["/archon/archon"]
           envFrom:
             - configMapRef:
                 name: archon-config
             - secretRef:
-                name: archon-db-app
+                name: cnpg-archon-app
           env:
             - name: RUST_LOG
               value: info,archon=debug
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: archon-db-app
+                  name: cnpg-archon-app
                   key: uri
             - name: DATABASE_MIN_CONNECTIONS
               value: "4"
             - name: DATABASE_MAX_CONNECTIONS
               value: "16"
             - name: REDIS_URL
-              value: redis://rfs-archon-redis.modrinth-infra.svc.cluster.local:26379
+              value: redis://rfs-redis-fo-archon.modrinth-infra.svc.cluster.local:26379
             - name: REDIS_MAX_CONNECTIONS
               value: "128"
             - name: HOST

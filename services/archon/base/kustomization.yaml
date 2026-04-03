@@ -4,7 +4,6 @@ namespace: modrinth
 resources:
   - service.yaml
   - deployment.yaml
-  - postgres.yaml
 configMapGenerator:
   - name: archon-config
     envs:

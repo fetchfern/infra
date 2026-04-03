@@ -4,6 +4,7 @@ labels:
   - includeSelectors: true
     pairs:
       app: archon
-      component: allin1
+      component: orchestrator
+nameSuffix: orchestrator
 resources:
   - ../../base

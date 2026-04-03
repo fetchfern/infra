@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator
+spec:
+  selector:
+    matchLabels:
+      app: archon
+      component: orchestrator
+  template:
+    metadata:
+      labels:
+        app: archon
+        component: orchestrator
+    spec:
+      containers:
+        args:
+          ["/archon/archon", "--orchestrator", "--migrate"]
