@@ -8,3 +8,25 @@ labels:
 nameSuffix: orchestrator
 resources:
   - ../../base
+patches:
+  - target:
+      kind: Deployment
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: orchestrator
+      spec:
+        selector:
+          matchLabels:
+            app: archon
+            component: orchestrator
+        template:
+          metadata:
+            labels:
+              app: archon
+              component: orchestrator
+          spec:
+            containers:
+              - name: archon
+                args: ["/archon/archon", "--orchestrator", "--migrate"]

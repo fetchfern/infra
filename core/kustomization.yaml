@@ -5,11 +5,13 @@ resources:
   - ../services/archon/components/core
   - ../services/archon/components/orchestrator
   - ../services/archon/components/worker
+  - ../services/labrinth/components/httpserver
   - ../infra/seaweefs-s3
+  - ../infra/mailpit
   - ../infra/registry
   - ../infra/buildkit
   - ../infra/clickhouse
-  - ../infra/rfo
+  - ../infra/redis
   - ../infra/cnpg/clusters
   - ./ingresses/archon-gateway.yaml
 components:

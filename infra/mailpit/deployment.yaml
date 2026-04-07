@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mailpit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailpit
+  template:
+    metadata:
+      labels:
+        app: mailpit
+    spec:
+      containers:
+        - name: mailpit
+          image: axllent/mailpit:v1.27
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MP_ENABLE_SPAMASSASSIN
+              value: postmark
+          ports:
+            - name: smtp
+              containerPort: 1025
+            - name: http
+              containerPort: 8025
+          readinessProbe:
+            httpGet:
+              path: /api/v1/info
+              port: http
+            periodSeconds: 3
+            timeoutSeconds: 5
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /api/v1/info
+              port: http
+            periodSeconds: 3
+            timeoutSeconds: 5
+            failureThreshold: 3

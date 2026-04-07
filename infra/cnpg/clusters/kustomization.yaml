@@ -7,3 +7,4 @@ labels:
       app.kubernetes.io/part-of: modrinth-stack
 resources:
   - cnpg-archon.yaml
+  - cnpg-labrinth.yaml

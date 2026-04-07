@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: labrinth-
+  namespace: modrinth
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - modrinth-labrinth
+  rules:
+    - host: modrinth-labrinth
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: labrinth-httpserver
+                port:
+                  number: 80

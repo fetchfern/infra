@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: archon-
+  namespace: modrinth
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - modrinth-archon
+  rules:
+    - host: modrinth-archon
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: archon-core
+                port:
+                  number: 80

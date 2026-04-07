@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mailpit
+  namespace: modrinth-infra
+spec:
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - modrinth-mailpit
+  rules:
+    - host: modrinth-mailpit
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mailpit
+                port:
+                  number: 8025

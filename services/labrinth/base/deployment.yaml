@@ -1,49 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: archon-
+  name: labrinth-
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: archon
+      app: labrinth
   template:
     metadata:
       labels:
-        app: archon
+        app: labrinth
     spec:
       containers:
-        - name: archon
-          image: archon
+        - name: labrinth
+          image: labrinth
           imagePullPolicy: IfNotPresent
-          args: ["/archon/archon"]
+          args: ["/labrinth/labrinth"]
           envFrom:
             - configMapRef:
-                name: archon-config
+                name: labrinth-config
             - secretRef:
-                name: cnpg-archon-app
+                name: cnpg-labrinth-app
           env:
             - name: RUST_LOG
-              value: info,archon=debug
+              value: info,labrinth=debug
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: cnpg-archon-app
+                  name: cnpg-labrinth-app
                   key: uri
             - name: DATABASE_MIN_CONNECTIONS
               value: "4"
             - name: DATABASE_MAX_CONNECTIONS
-              value: "16"
+              value: "32"
             - name: REDIS_URL
-              value: redis://redis-archon-redis.modrinth-infra.svc.cluster.local:6379
+              value: redis://redis-labrinth-redis.modrinth-infra.svc.cluster.local:6379
             - name: REDIS_MAX_CONNECTIONS
-              value: "128"
+              value: "256"
             - name: HOST
               value: "0.0.0.0"
             - name: PORT
               value: "8000"
             - name: SELF_ADDR
-              value: "http://modrinth-archon"
+              value: "http://modrinth-labrinth"
             - name: CLICKHOUSE_URL
               value: http://clickhouse-cluster-clickhouse-headless.modrinth-infra.svc.cluster.local:8123
             - name: CLICKHOUSE_USER
@@ -54,9 +54,11 @@ spec:
                   name: clickhouse-password-default
                   key: password
             - name: CLICKHOUSE_DATABASE
-              value: archon
-            - name: CLICKHOUSE_USE_VALIDATION
-              value: "1"
+              value: labrinth
+            - name: CLICKHOUSE_REPLICATED
+              value: "false"
+            - name: ARCHON_URL
+              value: http://archon-core.modrinth.svc.cluster.local
           ports:
             - name: http
               containerPort: 8000
@@ -65,11 +67,11 @@ spec:
               cpu: "1"
               memory: "128Mi"
             limits:
-              cpu: "2"
-              memory: "1Gi"
+              cpu: "4"
+              memory: "2Gi"
           readinessProbe:
             httpGet:
-              path: /healthz
+              path: /
               port: http
             periodSeconds: 10
             initialDelaySeconds: 0
@@ -77,7 +79,7 @@ spec:
             failureThreshold: 3
           startupProbe:
             httpGet:
-              path: /healthz
+              path: /
               port: http
             periodSeconds: 1
             initialDelaySeconds: 0
